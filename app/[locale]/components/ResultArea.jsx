@@ -20,6 +20,8 @@ const ResultArea = ({ result }) => {
                 )
               : "Aucun objet choisi"}
           </h1>
+         <Table data={result.resultTable}/>
+              
         </>
       ) : (
         <></>
@@ -29,3 +31,24 @@ const ResultArea = ({ result }) => {
 };
 
 export default ResultArea;
+
+const Table = ({ data }) => {
+  return (
+    <table className="border-collapse border w-full" cellSpacing="0">
+    <tbody>
+      {data.map((row, rowIndex) => (
+        <tr key={rowIndex}>
+          {row.map((cell, colIndex) => (
+            <td
+              key={colIndex}
+              className="border p-2 text-center"
+            >
+              {cell}
+            </td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  );
+};

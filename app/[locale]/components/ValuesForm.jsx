@@ -42,7 +42,7 @@ const formSchema = z.object({
     .optional(),
 });
 
-const ValuesForm = ({ setResult }) => {
+const ValuesForm = ({ setResult ,setResultTable}) => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -111,13 +111,19 @@ const ValuesForm = ({ setResult }) => {
   };
 
   const knapsack = (capacity, valeurs, poids) => {
+    const resultTable = [];
+
+    
     const n = valeurs.length;
     const dp = Array(n + 1)
       .fill(null)
       .map(() => Array(capacity + 1).fill(0));
+
+      console.table(dp)
     const selectedObjects = [];
 
     for (let i = 1; i <= n; i++) {
+      resultTable[i-1] = []; 
       for (let w = 1; w <= capacity; w++) {
         if (poids[i - 1] <= w) {
           dp[i][w] = Math.max(
@@ -127,6 +133,7 @@ const ValuesForm = ({ setResult }) => {
         } else {
           dp[i][w] = dp[i - 1][w];
         }
+        resultTable[i-1][w-1] = dp[i][w];
       }
     }
 
@@ -140,7 +147,7 @@ const ValuesForm = ({ setResult }) => {
       }
     }
 
-    return { maxValue: dp[n][capacity], selectedObjects };
+    return { maxValue: dp[n][capacity], selectedObjects,resultTable };
   };
 
   function onSubmit(values) {
